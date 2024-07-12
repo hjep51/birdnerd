@@ -1,16 +1,3 @@
-CREATE TABLE sample_person (
-    version INT NOT NULL,
-    id INT NOT NULL,
-    first_name VARCHAR(255),
-    last_name VARCHAR(255),
-    email VARCHAR(255),
-    phone VARCHAR(255),
-    date_of_birth DATE,
-    occupation VARCHAR(255),
-    role VARCHAR(255),
-    important BOOLEAN,
-    PRIMARY KEY (id)
-);
 insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 1,'Eula','Lane','eula.lane@jigrormo.ye','(762) 526-5961','1954-12-02','Insurance Clerk','Worker',false);
 insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 2,'Barry','Rodriquez','barry.rodriquez@zun.mm','(267) 955-5124','2013-12-02','Mortarman','Manager',false);
 insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 3,'Eugenia','Selvi','eugenia.selvi@capfad.vn','(680) 368-2192','1973-11-17','Beer Coil Cleaner','External',false);
