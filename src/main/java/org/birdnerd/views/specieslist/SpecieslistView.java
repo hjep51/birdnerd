@@ -1,6 +1,13 @@
 package org.birdnerd.views.specieslist;
 
+import com.vaadin.flow.component.Text;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.upload.Upload;
+import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
+import com.vaadin.flow.data.renderer.LitRenderer;
+import com.vaadin.flow.server.StreamResource;
+import lombok.extern.slf4j.Slf4j;
 import org.birdnerd.data.Species;
 import org.birdnerd.data.enums.SpeciesCategory;
 import org.birdnerd.data.enums.SpeciesStatus;
@@ -25,17 +32,19 @@ import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.data.VaadinSpringDataHelpers;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
+import java.io.*;
 import java.util.Optional;
 
+@Slf4j
 @PageTitle("Species list")
 @Route(value = "species/:speciesID?/:action?(edit)", layout = MainLayout.class)
 @Uses(Icon.class)
@@ -43,6 +52,9 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
 
     private final String SPECIES_ID = "speciesID";
     private final String SPECIES_EDIT_ROUTE_TEMPLATE = "species/%s/edit";
+
+    @Value("${birdnerd.imagepath}")
+    private String IMAGE_PATH;
 
     private final Grid<Species> grid = new Grid<>(Species.class, false);
 
@@ -54,6 +66,9 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
     private ComboBox<SpeciesCategory> category;
     private ComboBox<SpeciesType> type;
     private ComboBox<SpeciesStatus> status;
+    private Upload imageUpload;
+    private TextField imageFileName;
+    private Div speciesImage;
 
     private final Button cancel = new Button("Cancel");
     private final Button save = new Button("Save");
@@ -63,6 +78,10 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
     private Species species;
 
     private final SpeciesService speciesService;
+
+    private File file;
+    private String originalFileName;
+    private String mimeType;
 
     public SpecieslistView(SpeciesService speciesService) {
         this.speciesService = speciesService;
@@ -85,6 +104,15 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
         grid.addColumn("type").setAutoWidth(true);
         grid.addColumn("status").setAutoWidth(true);
         grid.addColumn("firstObservation").setAutoWidth(true);
+
+        LitRenderer<Species> imageFileNameRender = LitRenderer.<Species>of(
+                        "<vaadin-icon icon='vaadin:${item.icon}' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: ${item.color};'></vaadin-icon>")
+                .withProperty("icon", species -> (species.getImageFileName() != null && !species.getImageFileName().isEmpty()) ? "check" : "minus").withProperty("color",
+                        species -> (species.getImageFileName() != null && !species.getImageFileName().isEmpty())
+                                ? "var(--lumo-primary-text-color)"
+                                : "var(--lumo-disabled-text-color)");
+
+        grid.addColumn(imageFileNameRender).setHeader("Has image").setAutoWidth(true);
 
         grid.setItems(query -> speciesService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
@@ -120,6 +148,7 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
                     this.species = new Species();
                 }
                 binder.writeBean(this.species);
+                saveImage();
                 speciesService.update(this.species);
                 clearForm();
                 refreshGrid();
@@ -178,12 +207,36 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
         status = new ComboBox<>("Status");
         status.setItems(SpeciesStatus.values());
         status.setItemLabelGenerator(SpeciesStatus::name);
-        formLayout.add(danishName, latinName, englishName, euringCode, firstObservation, category, type, status);
+        imageFileName = new TextField("Image file");
+        imageFileName.setReadOnly(true);
+        MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
+        imageUpload = new Upload(this::receiveUpload);
+        imageUpload.setAcceptedFileTypes("image/jpeg", "image/png");
+        imageUpload.setMaxFiles(1);
+        speciesImage = new Div(new Text("(no image file uploaded yet)"));
+        formLayout.add(danishName, latinName, englishName, euringCode, firstObservation, category, type, status, imageFileName, imageUpload, speciesImage);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
 
         splitLayout.addToSecondary(editorLayoutDiv);
+
+        imageUpload.addSucceededListener(event -> {
+            speciesImage.removeAll();
+            imageFileName.setValue(originalFileName);
+            Image img = new Image(new StreamResource(this.originalFileName,this::loadFile),"Uploaded image");
+            img.setWidth("100%");
+            speciesImage.add(img);
+            speciesImage.add(new Text("Uploaded: "+originalFileName+" to "+ file.getAbsolutePath()+ "Type: "+mimeType));
+        });
+
+        imageUpload.addFileRejectedListener(event -> {
+            String errorMessage = event.getErrorMessage();
+
+            Notification notification = Notification.show(errorMessage, 5000,
+                    Notification.Position.MIDDLE);
+            notification.addThemeVariants(NotificationVariant.LUMO_ERROR);
+        });
     }
 
     private void createButtonLayout(Div editorLayoutDiv) {
@@ -209,11 +262,56 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
 
     private void clearForm() {
         populateForm(null);
+        speciesImage.removeAll();
+        imageUpload.clearFileList();
+        file = null;
+        originalFileName = null;
+        mimeType = null;
     }
 
     private void populateForm(Species value) {
         this.species = value;
         binder.readBean(this.species);
 
+    }
+
+    public InputStream loadFile() {
+        try {
+            return new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            log.warn("Failed to create InputStream for: '{}'", this.file.getAbsolutePath(), e);
+        }
+        return null;
+    }
+
+    public OutputStream receiveUpload(String originalFileName, String MIMEType) {
+        this.originalFileName = originalFileName;
+        this.mimeType = MIMEType;
+        try {
+            // Create a temporary file for example, you can provide your file here.
+            this.file = File.createTempFile("prefix-", "-suffix");
+            file.deleteOnExit();
+            return new FileOutputStream(file);
+        } catch (IOException e) {
+            log.warn("Failed to create InputStream for: '{}'", this.file.getAbsolutePath(), e);
+        }
+
+        return null;
+    }
+
+    public boolean saveImage() {
+        if (this.file != null) {
+            try {
+                File targetFile = new File(IMAGE_PATH + this.originalFileName);
+                if (targetFile.exists()) {
+                    targetFile.delete();
+                }
+                this.file.renameTo(targetFile);
+                return true;
+            } catch (Exception e) {
+                log.warn("Failed to save image file: '{}'", this.file.getAbsolutePath(), e);
+            }
+        }
+        return false;
     }
 }

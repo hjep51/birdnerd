@@ -10,6 +10,7 @@ import org.birdnerd.data.enums.SpeciesCategory;
 import org.birdnerd.data.enums.SpeciesStatus;
 import org.birdnerd.data.enums.SpeciesType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,9 @@ public class DataInitializer {
 
     private final ResourceLoader resourceLoader;
 
+    @Value( "${birdnerd.doffile}" )
+    private String DOF_SPECIES_CSV;
+
     public DataInitializer(SpeciesRepository speciesRepository, ResourceLoader resourceLoader) {
         this.speciesRepository = speciesRepository;
         this.resourceLoader = resourceLoader;
@@ -39,7 +43,7 @@ public class DataInitializer {
             return; // Skip importing if data exists
         }
         Resource resource = resourceLoader.getResource("classpath:dof-species.csv");
-        File csvFile = new File("/Users/hjep/Development/Personal/birdnerd/src/main/resources/dof-species.csv");
+        File csvFile = new File(DOF_SPECIES_CSV);
         try (Scanner scanner = new Scanner(csvFile)) {
             if (scanner.hasNextLine()) { // Skip the first line (header)
                 scanner.nextLine();
