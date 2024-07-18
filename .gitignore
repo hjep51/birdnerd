@@ -6,6 +6,14 @@
 db/
 tmp-images/
 src/main/frontend/generated/
+.npmrc
+node_modules/
+package.json
+src/main/bundles/
+tsconfig.json
+types.d.ts
+vite.config.ts
+vite.generated.ts
 
 ### Intellij+all ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm and Rider

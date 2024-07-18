@@ -3,6 +3,7 @@ package org.birdnerd.views;
 import org.birdnerd.views.birds.BirdsView;
 import org.birdnerd.views.bnworkflow.BNWorkflowView;
 import org.birdnerd.views.dofbasen.DofbasenView;
+import org.birdnerd.views.map.MapView;
 import org.birdnerd.views.specieslist.SpecieslistView;
 import org.birdnerd.views.tags.TagsView;
 import com.vaadin.flow.component.applayout.AppLayout;
@@ -54,11 +55,12 @@ public class MainLayout extends AppLayout {
     private SideNav createNavigation() {
         SideNav nav = new SideNav();
 
-        nav.addItem(new SideNavItem("Birds", BirdsView.class, LineAwesomeIcon.DOVE_SOLID.create()));
+        nav.addItem(new SideNavItem("Birds", BirdsView.class, LineAwesomeIcon.CROW_SOLID.create()));
         nav.addItem(new SideNavItem("Species list", SpecieslistView.class, LineAwesomeIcon.TH_LIST_SOLID.create()));
         nav.addItem(new SideNavItem("Tags", TagsView.class, LineAwesomeIcon.HASHTAG_SOLID.create()));
         nav.addItem(new SideNavItem("BN Workflow", BNWorkflowView.class, LineAwesomeIcon.PENCIL_RULER_SOLID.create()));
         nav.addItem(new SideNavItem("Dofbasen", DofbasenView.class, LineAwesomeIcon.BROADCAST_TOWER_SOLID.create()));
+        nav.addItem(new SideNavItem("Map", MapView.class, LineAwesomeIcon.GLOBE_SOLID.create()));
 
         return nav;
     }
