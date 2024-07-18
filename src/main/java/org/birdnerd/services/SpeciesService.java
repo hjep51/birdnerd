@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -36,6 +37,10 @@ public class SpeciesService {
 
     public Page<Species> list(Pageable pageable, Specification<Species> filter) {
         return repository.findAll(filter, pageable);
+    }
+
+    public List<Species> listOfObservertWithImage() {
+        return repository.findByFirstObservationIsNotNullAndImageFileNameIsNotEmpty();
     }
 
     public int count() {
