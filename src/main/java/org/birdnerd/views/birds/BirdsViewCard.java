@@ -4,8 +4,7 @@ import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.theme.lumo.LumoUtility.*;
 import lombok.extern.slf4j.Slf4j;
-import org.birdnerd.data.Species;
-import org.springframework.beans.factory.annotation.Value;
+import org.birdnerd.data.models.Species;
 
 import java.io.*;
 import java.time.format.DateTimeFormatter;

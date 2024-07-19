@@ -1,4 +1,4 @@
-package org.birdnerd.data;
+package org.birdnerd.data.models;
 
 
 import java.util.Objects;

@@ -1,6 +1,6 @@
 package org.birdnerd.views.dofbasen;
 
-import org.birdnerd.data.SamplePerson;
+import org.birdnerd.data.models.SamplePerson;
 import org.birdnerd.services.SamplePersonService;
 import org.birdnerd.views.MainLayout;
 import com.vaadin.flow.component.Component;

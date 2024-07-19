@@ -1,7 +1,7 @@
 package org.birdnerd.services;
 
 
-import org.birdnerd.data.SamplePerson;
+import org.birdnerd.data.models.SamplePerson;
 import org.birdnerd.data.SamplePersonRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

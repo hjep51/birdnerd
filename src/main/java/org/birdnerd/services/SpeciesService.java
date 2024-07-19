@@ -1,6 +1,6 @@
 package org.birdnerd.services;
 
-import org.birdnerd.data.Species;
+import org.birdnerd.data.models.Species;
 import org.birdnerd.data.SpeciesRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

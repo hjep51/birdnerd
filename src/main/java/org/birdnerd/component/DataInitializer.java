@@ -1,15 +1,12 @@
 package org.birdnerd.component;
 
 import jakarta.annotation.PostConstruct;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
-import org.birdnerd.data.Species;
+import org.birdnerd.data.models.Species;
 import org.birdnerd.data.SpeciesRepository;
 import org.birdnerd.data.enums.SpeciesCategory;
 import org.birdnerd.data.enums.SpeciesStatus;
 import org.birdnerd.data.enums.SpeciesType;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
@@ -17,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Scanner;
 
 @Component

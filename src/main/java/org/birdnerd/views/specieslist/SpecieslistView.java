@@ -8,7 +8,7 @@ import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.server.StreamResource;
 import lombok.extern.slf4j.Slf4j;
-import org.birdnerd.data.Species;
+import org.birdnerd.data.models.Species;
 import org.birdnerd.data.enums.SpeciesCategory;
 import org.birdnerd.data.enums.SpeciesStatus;
 import org.birdnerd.data.enums.SpeciesType;

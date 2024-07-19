@@ -1,4 +1,4 @@
-package org.birdnerd.data;
+package org.birdnerd.data.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-public class Species extends AbstractEntity{
+public class Species extends AbstractEntity {
 
     private String danishName;
     private String latinName;
