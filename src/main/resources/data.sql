@@ -1,3 +1,18 @@
+-- Default data for the tag_group table
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 1, 'Instagram camera', 'Instagram tags related to cameras', null);
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 2, 'Instagram natur', 'Instagram tags related to nature', null);
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 3, 'Instagram bird', 'Instagram tags related to birds', 'BIRD');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 4, 'Instagram mammal', 'Instagram tags related to mammals', 'MAMMAL');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 5, 'Instagram butterfly', 'Instagram tags related to butterflies', 'BUTTERFLY');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 6, 'Instagram insect', 'Instagram tags related to insects', 'INSECT');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 7, 'Instagram reptile', 'Instagram tags related to reptiles', 'REPTILE');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 8, 'Instagram fish', 'Instagram tags related to fish', 'FISH');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 9, 'Instagram amphibian', 'Instagram tags related to amphibians', 'AMPHIBIAN');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 10, 'Instagram invertebrate', 'Instagram tags related to invertebrates', 'INVERTEBRATE');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 11, 'Instagram snail', 'Instagram tags related to snails', 'SNAIL');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 12, 'Instagram snake', 'Instagram tags related to snakes', 'SNAKE');
+
+-- Sample data for the sample_person table
 insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 1,'Eula','Lane','eula.lane@jigrormo.ye','(762) 526-5961','1954-12-02','Insurance Clerk','Worker',false);
 insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 2,'Barry','Rodriquez','barry.rodriquez@zun.mm','(267) 955-5124','2013-12-02','Mortarman','Manager',false);
 insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 3,'Eugenia','Selvi','eugenia.selvi@capfad.vn','(680) 368-2192','1973-11-17','Beer Coil Cleaner','External',false);

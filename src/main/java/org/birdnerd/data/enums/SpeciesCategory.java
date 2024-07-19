@@ -3,7 +3,7 @@ package org.birdnerd.data.enums;
 public enum SpeciesCategory {
     BIRD("Fugl"),
     MAMMAL("Pattedyr"),
-    BUG("Insekt"),
+    INSECT("Insekt"),
     REPTILE("Reptil"),
     AMPHIBIAN("Amfibie"),
     FISH("Fisk"),

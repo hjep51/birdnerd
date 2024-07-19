@@ -1,13 +1,15 @@
 package org.birdnerd.views.tags;
 
-import org.birdnerd.data.models.SamplePerson;
-import org.birdnerd.services.SamplePersonService;
+import com.vaadin.flow.component.combobox.ComboBox;
+import lombok.extern.slf4j.Slf4j;
+import org.birdnerd.data.models.HashTag;
+import org.birdnerd.data.models.HashTagGroup;
+import org.birdnerd.services.HashTagGroupService;
+import org.birdnerd.services.HashTagService;
 import org.birdnerd.views.MainLayout;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.Uses;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
@@ -22,7 +24,6 @@ import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.ValidationException;
-import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
 import com.vaadin.flow.router.PageTitle;
@@ -33,36 +34,33 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import java.util.Optional;
 
+@Slf4j
 @PageTitle("Tags")
 @Route(value = "tags/:tagId?/:action?(edit)", layout = MainLayout.class)
 @Uses(Icon.class)
 public class TagsView extends Div implements BeforeEnterObserver {
 
-    private final String TAG_ID = "samplePersonID";
+    private final String TAG_ID = "tagId";
     private final String TAG_EDIT_ROUTE_TEMPLATE = "tags/%s/edit";
 
-    private final Grid<SamplePerson> grid = new Grid<>(SamplePerson.class, false);
+    private final Grid<HashTag> grid = new Grid<>(HashTag.class, false);
 
-    private TextField firstName;
-    private TextField lastName;
-    private TextField email;
-    private TextField phone;
-    private DatePicker dateOfBirth;
-    private TextField occupation;
-    private TextField role;
-    private Checkbox important;
+    private TextField name;
+    private ComboBox<HashTagGroup> hashTagGroup;
 
     private final Button cancel = new Button("Cancel");
     private final Button save = new Button("Save");
 
-    private final BeanValidationBinder<SamplePerson> binder;
+    private final BeanValidationBinder<HashTag> binder;
 
-    private SamplePerson samplePerson;
+    private HashTag hashTag;
 
-    private final SamplePersonService samplePersonService;
+    private final HashTagService hashTagService;
+    private final HashTagGroupService hashTagGroupService;
 
-    public TagsView(SamplePersonService samplePersonService) {
-        this.samplePersonService = samplePersonService;
+    public TagsView(HashTagService hashTagService, HashTagGroupService hashTagGroupService) {
+        this.hashTagService = hashTagService;
+        this.hashTagGroupService = hashTagGroupService;
         addClassNames("tags-view");
 
         // Create UI
@@ -74,25 +72,20 @@ public class TagsView extends Div implements BeforeEnterObserver {
         add(splitLayout);
 
         // Configure Grid
-        grid.addColumn("firstName").setAutoWidth(true);
-        grid.addColumn("lastName").setAutoWidth(true);
-        grid.addColumn("email").setAutoWidth(true);
-        grid.addColumn("phone").setAutoWidth(true);
-        grid.addColumn("dateOfBirth").setAutoWidth(true);
-        grid.addColumn("occupation").setAutoWidth(true);
-        grid.addColumn("role").setAutoWidth(true);
-        LitRenderer<SamplePerson> importantRenderer = LitRenderer.<SamplePerson>of(
-                "<vaadin-icon icon='vaadin:${item.icon}' style='width: var(--lumo-icon-size-s); height: var(--lumo-icon-size-s); color: ${item.color};'></vaadin-icon>")
-                .withProperty("icon", important -> important.isImportant() ? "check" : "minus").withProperty("color",
-                        important -> important.isImportant()
-                                ? "var(--lumo-primary-text-color)"
-                                : "var(--lumo-disabled-text-color)");
-
-        grid.addColumn(importantRenderer).setHeader("Important").setAutoWidth(true);
-
-        grid.setItems(query -> samplePersonService.list(
+        grid.addColumn("name").setAutoWidth(true);
+        grid.addColumn("hashTagGroup.name").setAutoWidth(true).setHeader("HashTag Group");
+        grid.addColumn("created").setAutoWidth(true);
+        
+        grid.setItems(query -> hashTagService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
-                .stream());
+                .stream().map(hashTag -> {
+                    if (hashTag.getHashTagGroup() == null) {
+                        hashTag.setHashTagGroup(new HashTagGroup());
+                        hashTag.getHashTagGroup().setName("");
+                    }
+                    return hashTag;
+                })
+        );
         grid.addThemeVariants(GridVariant.LUMO_NO_BORDER);
 
         // when a row is selected or deselected, populate form
@@ -106,7 +99,7 @@ public class TagsView extends Div implements BeforeEnterObserver {
         });
 
         // Configure Form
-        binder = new BeanValidationBinder<>(SamplePerson.class);
+        binder = new BeanValidationBinder<>(HashTag.class);
 
         // Bind fields. This is where you'd define e.g. validation rules
 
@@ -119,11 +112,11 @@ public class TagsView extends Div implements BeforeEnterObserver {
 
         save.addClickListener(e -> {
             try {
-                if (this.samplePerson == null) {
-                    this.samplePerson = new SamplePerson();
+                if (this.hashTag == null) {
+                    this.hashTag = new HashTag();
                 }
-                binder.writeBean(this.samplePerson);
-                samplePersonService.update(this.samplePerson);
+                binder.writeBean(this.hashTag);
+                hashTagService.update(this.hashTag);
                 clearForm();
                 refreshGrid();
                 Notification.show("Data updated");
@@ -141,14 +134,14 @@ public class TagsView extends Div implements BeforeEnterObserver {
 
     @Override
     public void beforeEnter(BeforeEnterEvent event) {
-        Optional<Long> samplePersonId = event.getRouteParameters().get(TAG_ID).map(Long::parseLong);
-        if (samplePersonId.isPresent()) {
-            Optional<SamplePerson> samplePersonFromBackend = samplePersonService.get(samplePersonId.get());
-            if (samplePersonFromBackend.isPresent()) {
-                populateForm(samplePersonFromBackend.get());
+        Optional<Long> hashTagId = event.getRouteParameters().get(TAG_ID).map(Long::parseLong);
+        if (hashTagId.isPresent()) {
+            Optional<HashTag> hashTagFromBackend = hashTagService.get(hashTagId.get());
+            if (hashTagFromBackend.isPresent()) {
+                populateForm(hashTagFromBackend.get());
             } else {
                 Notification.show(
-                        String.format("The requested samplePerson was not found, ID = %s", samplePersonId.get()), 3000,
+                        String.format("The requested samplePerson was not found, ID = %s", hashTagId.get()), 3000,
                         Position.BOTTOM_START);
                 // when a row is selected but the data is no longer available,
                 // refresh grid
@@ -167,15 +160,12 @@ public class TagsView extends Div implements BeforeEnterObserver {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        firstName = new TextField("First Name");
-        lastName = new TextField("Last Name");
-        email = new TextField("Email");
-        phone = new TextField("Phone");
-        dateOfBirth = new DatePicker("Date Of Birth");
-        occupation = new TextField("Occupation");
-        role = new TextField("Role");
-        important = new Checkbox("Important");
-        formLayout.add(firstName, lastName, email, phone, dateOfBirth, occupation, role, important);
+        name = new TextField("First Name");
+        hashTagGroup = new ComboBox<>("HashTag Group");
+        hashTagGroup.setItems((hashTagGroupService.list(PageRequest.of(0, hashTagGroupService.count())).getContent()));
+        hashTagGroup.setItemLabelGenerator(HashTagGroup::getName);
+
+        formLayout.add(name, hashTagGroup);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
@@ -208,9 +198,13 @@ public class TagsView extends Div implements BeforeEnterObserver {
         populateForm(null);
     }
 
-    private void populateForm(SamplePerson value) {
-        this.samplePerson = value;
-        binder.readBean(this.samplePerson);
-
+    private void populateForm(HashTag value) {
+        this.hashTag = value;
+        binder.readBean(this.hashTag);
+        if (this.hashTag != null && this.hashTag.getHashTagGroup() != null) {
+            hashTagGroup.setValue(this.hashTag.getHashTagGroup());
+        } else {
+            hashTagGroup.clear();
+        }
     }
 }
