@@ -18,10 +18,9 @@ import java.time.LocalDateTime;
 public class HashTag extends AbstractEntity {
 
     private String name;
+    private int weight;
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     private HashTagGroup hashTagGroup;
-    @CreationTimestamp
-    private LocalDateTime created;
 
     public String getAsHashTag() {
         return "#" + name.toLowerCase().replace(" ", "");

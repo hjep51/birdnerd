@@ -1,16 +1,54 @@
 -- Default data for the tag_group table
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 1, 'Instagram camera', 'Instagram tags related to cameras', null);
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 2, 'Instagram natur', 'Instagram tags related to nature', null);
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 3, 'Instagram bird', 'Instagram tags related to birds', 'BIRD');
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 4, 'Instagram mammal', 'Instagram tags related to mammals', 'MAMMAL');
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 5, 'Instagram butterfly', 'Instagram tags related to butterflies', 'BUTTERFLY');
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 6, 'Instagram insect', 'Instagram tags related to insects', 'INSECT');
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 7, 'Instagram reptile', 'Instagram tags related to reptiles', 'REPTILE');
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 8, 'Instagram fish', 'Instagram tags related to fish', 'FISH');
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 9, 'Instagram amphibian', 'Instagram tags related to amphibians', 'AMPHIBIAN');
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 10, 'Instagram invertebrate', 'Instagram tags related to invertebrates', 'INVERTEBRATE');
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 11, 'Instagram snail', 'Instagram tags related to snails', 'SNAIL');
-INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 12, 'Instagram snake', 'Instagram tags related to snakes', 'SNAKE');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 1, 'Camera', 'Tags related to cameras', null);
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 2, 'Natur', 'Tags related to nature', null);
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 3, 'Natur DK', 'Tags related to danish nature', null);
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 4, 'Wildlife', 'Tags related to wildlife', null);
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 5, 'Bird of prey', 'Tags related to bird of prey', null);
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 6, 'Bird', 'Tags related to birds', 'BIRD');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 7, 'Mammal', 'Tags related to mammals', 'MAMMAL');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 8, 'Butterfly', 'Tags related to butterflies', 'BUTTERFLY');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 9, 'Insect', 'Tags related to insects', 'INSECT');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 10, 'Reptile', 'Tags related to reptiles', 'REPTILE');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 11, 'Fish', 'Tags related to fish', 'FISH');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 12, 'Amphibian', 'Tags related to amphibians', 'AMPHIBIAN');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 13, 'Invertebrate', 'Tags related to invertebrates', 'INVERTEBRATE');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 14, 'Snail', 'Tags related to snails', 'SNAIL');
+INSERT INTO hash_tag_group (version, id, name, description, species_category) VALUES (1, 15, 'Snake', 'Tags related to snakes', 'SNAKE');
+
+-- Default data for the tag table
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 1, 'Canon', 1, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 2, 'Canon photography', 1, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 3, 'Canon 90d', 1, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 4, 'Sigma 150 600 contemporary', 1, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 5, 'Nature', 2, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 6, 'Earth Capture', 2, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 7, 'Nature Photography', 2, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 8, 'Nature Shooters', 2, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 9, 'Natur Safari', 2, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 10, 'Splendid nature', 2, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 11, 'Danmarks natur', 3, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 12, 'DK natur', 3, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 13, 'Naturen i Danmark', 3, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 14, 'Natur safari', 3, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 15, 'Ud i naturen', 3, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 16, 'Explore wildlife', 4, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 17, 'Wildlife', 4, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 18, 'Wildlife perfection', 4, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 19, 'Wildlife photography', 4, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 20, 'Wildlife photos', 4, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 21, 'Animal photography', 4, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 22, 'Animal photos', 4, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 23, 'Animals of instagram', 4, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 24, 'Bird of prey', 5, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 25, 'Bird of prey photography', 5, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 26, 'Bird', 6, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 27, 'Bird photography', 6, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 28, 'Birds of instagram', 6, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 29, 'Insects', 9, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 30, 'Insects of instagram', 9, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 31, 'Insects photography', 9, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 32, 'Entomology', 9, 50);
+INSERT INTO hash_tag (version, id, name, hash_tag_group_id, weight) VALUES (1, 33, 'Insects closeup', 9, 50);
 
 -- Sample data for the sample_person table
 insert into sample_person(version, id,first_name,last_name,email,phone,date_of_birth,occupation,role,important) values (1, 1,'Eula','Lane','eula.lane@jigrormo.ye','(762) 526-5961','1954-12-02','Insurance Clerk','Worker',false);

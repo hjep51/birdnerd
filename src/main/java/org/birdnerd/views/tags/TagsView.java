@@ -1,6 +1,7 @@
 package org.birdnerd.views.tags;
 
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.textfield.IntegerField;
 import lombok.extern.slf4j.Slf4j;
 import org.birdnerd.data.models.HashTag;
 import org.birdnerd.data.models.HashTagGroup;
@@ -46,6 +47,7 @@ public class TagsView extends Div implements BeforeEnterObserver {
     private final Grid<HashTag> grid = new Grid<>(HashTag.class, false);
 
     private TextField name;
+    private IntegerField weight;
     private ComboBox<HashTagGroup> hashTagGroup;
 
     private final Button cancel = new Button("Cancel");
@@ -74,8 +76,8 @@ public class TagsView extends Div implements BeforeEnterObserver {
         // Configure Grid
         grid.addColumn("name").setAutoWidth(true);
         grid.addColumn(HashTag::getAsHashTag).setAutoWidth(true).setHeader("HashTag");
+        grid.addColumn("weight").setAutoWidth(true);
         grid.addColumn("hashTagGroup.name").setAutoWidth(true).setHeader("HashTag Group");
-        grid.addColumn("created").setAutoWidth(true);
         
         grid.setItems(query -> hashTagService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
@@ -163,12 +165,19 @@ public class TagsView extends Div implements BeforeEnterObserver {
         FormLayout formLayout = new FormLayout();
         name = new TextField("Tag");
         name.setPlaceholder("eg. birdwatching");
+        name.setRequired(true);
+        weight = new IntegerField("Weight");
+        weight.setValue(50);
+        weight.setRequired(true);
+        weight.setStepButtonsVisible(true);
+        weight.setMin(0);
+        weight.setMax(100);
         hashTagGroup = new ComboBox<>("HashTag Group");
         hashTagGroup.setItems((hashTagGroupService.list(PageRequest.of(0, hashTagGroupService.count())).getContent()));
         hashTagGroup.setItemLabelGenerator(HashTagGroup::getName);
         hashTagGroup.setPlaceholder("Select a group for the tag");
 
-        formLayout.add(name, hashTagGroup);
+        formLayout.add(name, weight, hashTagGroup);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
