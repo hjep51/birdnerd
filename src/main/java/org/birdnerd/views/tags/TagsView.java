@@ -73,6 +73,7 @@ public class TagsView extends Div implements BeforeEnterObserver {
 
         // Configure Grid
         grid.addColumn("name").setAutoWidth(true);
+        grid.addColumn(HashTag::getAsHashTag).setAutoWidth(true).setHeader("HashTag");
         grid.addColumn("hashTagGroup.name").setAutoWidth(true).setHeader("HashTag Group");
         grid.addColumn("created").setAutoWidth(true);
         
@@ -160,10 +161,12 @@ public class TagsView extends Div implements BeforeEnterObserver {
         editorLayoutDiv.add(editorDiv);
 
         FormLayout formLayout = new FormLayout();
-        name = new TextField("First Name");
+        name = new TextField("Tag");
+        name.setPlaceholder("eg. birdwatching");
         hashTagGroup = new ComboBox<>("HashTag Group");
         hashTagGroup.setItems((hashTagGroupService.list(PageRequest.of(0, hashTagGroupService.count())).getContent()));
         hashTagGroup.setItemLabelGenerator(HashTagGroup::getName);
+        hashTagGroup.setPlaceholder("Select a group for the tag");
 
         formLayout.add(name, hashTagGroup);
 

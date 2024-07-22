@@ -203,10 +203,15 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
 
         FormLayout formLayout = new FormLayout();
         danishName = new TextField("Danish Name");
+        danishName.setPlaceholder("eg. Knortegås");
         latinName = new TextField("Latin Name");
+        latinName.setPlaceholder("eg. Branta bernicla");
         englishName = new TextField("English Name");
+        englishName.setPlaceholder("eg. Brent Goose");
         euringCode = new TextField("Euring Code");
+        euringCode.setHelperText("The Euring code is a unique identifier for bird species. See more on https://www.euring.org/");
         firstObservation = new DatePicker("First Observation");
+        firstObservation.setPlaceholder("eg. 01.01.2021");
         category = new ComboBox<>("Category");
         category.setItems(SpeciesCategory.values());
         category.setItemLabelGenerator(SpeciesCategory::name);
@@ -219,6 +224,7 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
         hashTagGroups = new MultiSelectComboBox<>("HashTag Groups");
         hashTagGroups.setItems(hashTagGroupService.list(PageRequest.of(0, 100)).getContent());
         hashTagGroups.setItemLabelGenerator(HashTagGroup::getName);
+        hashTagGroups.setPlaceholder("Select HashTag Groups");
         imageFileName = new TextField("Image file");
         imageFileName.setReadOnly(true);
         MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();

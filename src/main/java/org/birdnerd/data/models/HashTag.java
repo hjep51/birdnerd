@@ -22,4 +22,8 @@ public class HashTag extends AbstractEntity {
     private HashTagGroup hashTagGroup;
     @CreationTimestamp
     private LocalDateTime created;
+
+    public String getAsHashTag() {
+        return "#" + name.toLowerCase().replace(" ", "");
+    }
 }

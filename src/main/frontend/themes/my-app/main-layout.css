@@ -22,3 +22,8 @@ vaadin-side-nav-item vaadin-icon {
 [theme~="badge"] {
   margin-right: 0.3em;
 }
+
+[badgetype="tag"] {
+  background-color: darkolivegreen;
+  color: white;
+}

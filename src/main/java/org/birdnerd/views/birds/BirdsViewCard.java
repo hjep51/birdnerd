@@ -5,6 +5,8 @@ import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.theme.lumo.LumoUtility.*;
 import lombok.extern.slf4j.Slf4j;
 import org.birdnerd.data.models.Species;
+import org.birdnerd.data.models.HashTagGroup;
+import org.birdnerd.data.models.HashTag;
 
 import java.io.*;
 import java.time.format.DateTimeFormatter;
@@ -42,9 +44,21 @@ public class BirdsViewCard extends ListItem {
 
 
 
+
         Paragraph description = new Paragraph(
                 "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut.");
         description.addClassName(Margin.Vertical.MEDIUM);
+
+        Div tagBadges = new Div();
+
+        species.getHashTagGroups().forEach(hashTagGroup -> {
+            hashTagGroup.getHashTags().forEach(hashTag -> {
+                Span badge = new Span();
+                badge.getElement().setAttribute("theme", "badge").setAttribute("badgetype", "tag");
+                badge.setText(hashTag.getAsHashTag());
+                tagBadges.add(badge);
+            });
+        });
 
         Div badges = new Div();
 
@@ -58,7 +72,7 @@ public class BirdsViewCard extends ListItem {
 
         badges.add(badgeObservation, badgeSpeciesCategory);
 
-        add(div, header, subtitle, description, badges);
+        add(div, header, subtitle, description, tagBadges, badges);
 
     }
 
