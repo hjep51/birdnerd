@@ -69,6 +69,10 @@ public class BirdsViewCard extends ListItem {
             });
         });
 
+        species.getHashTags().forEach(hashTag -> {
+            hashTagList.add(hashTag.getAsHashTag());
+        });
+
         hashTagList.forEach(hashTag -> {
             Span badge = new Span();
             badge.getElement().setAttribute("theme", "badge").setAttribute("badgetype", "tag");

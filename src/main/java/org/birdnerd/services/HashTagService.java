@@ -44,4 +44,8 @@ public class HashTagService {
         return (int) repository.count();
     }
 
+    public List<HashTag> listAll() {
+        return repository.findAll();
+    }
+
 }

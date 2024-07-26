@@ -30,5 +30,7 @@ public class Species extends AbstractEntity {
     private String imageFileName;
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<HashTagGroup> hashTagGroups;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<HashTag> hashTags;
 
 }

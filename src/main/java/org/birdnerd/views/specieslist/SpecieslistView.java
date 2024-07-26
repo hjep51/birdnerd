@@ -1,8 +1,6 @@
 package org.birdnerd.views.specieslist;
 
 import com.vaadin.flow.component.Text;
-import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.html.Image;
@@ -11,12 +9,14 @@ import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.server.StreamResource;
 import lombok.extern.slf4j.Slf4j;
+import org.birdnerd.data.models.HashTag;
 import org.birdnerd.data.models.Species;
 import org.birdnerd.data.models.HashTagGroup;
 import org.birdnerd.data.enums.SpeciesCategory;
 import org.birdnerd.data.enums.SpeciesStatus;
 import org.birdnerd.data.enums.SpeciesType;
 import org.birdnerd.services.HashTagGroupService;
+import org.birdnerd.services.HashTagService;
 import org.birdnerd.services.SpeciesService;
 import org.birdnerd.views.MainLayout;
 import com.vaadin.flow.component.UI;
@@ -47,8 +47,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import java.io.*;
+import java.util.HashSet;
 import java.util.Optional;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 @Slf4j
 @PageTitle("Species list")
@@ -76,6 +77,7 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
     private TextField imageFileName;
     private Div speciesImage;
     private MultiSelectComboBox<HashTagGroup> hashTagGroups;
+    private MultiSelectComboBox<HashTag> hashTags;
 
     private final Button cancel = new Button("Cancel");
     private final Button save = new Button("Save");
@@ -86,14 +88,16 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
 
     private final SpeciesService speciesService;
     private final HashTagGroupService hashTagGroupService;
+    private final HashTagService hashTagService;
 
     private File file;
     private String originalFileName;
     private String mimeType;
 
-    public SpecieslistView(SpeciesService speciesService, HashTagGroupService hashTagGroupService) {
+    public SpecieslistView(SpeciesService speciesService, HashTagGroupService hashTagGroupService, HashTagService hashTagService) {
         this.speciesService = speciesService;
         this.hashTagGroupService = hashTagGroupService;
+        this.hashTagService = hashTagService;
         addClassNames("specieslist-view");
 
         // Create UI
@@ -221,10 +225,30 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
         status = new ComboBox<>("Status");
         status.setItems(SpeciesStatus.values());
         status.setItemLabelGenerator(SpeciesStatus::name);
+
         hashTagGroups = new MultiSelectComboBox<>("HashTag Groups");
         hashTagGroups.setItems(hashTagGroupService.list(PageRequest.of(0, 100)).getContent());
         hashTagGroups.setItemLabelGenerator(HashTagGroup::getName);
         hashTagGroups.setPlaceholder("Select HashTag Groups");
+
+        hashTags = new MultiSelectComboBox<>("HashTag");
+        hashTags.setItems(hashTagService.listAll());
+        hashTags.setItemLabelGenerator(HashTag::getName);
+        hashTags.setAllowCustomValue(true);
+        hashTags.addCustomValueSetListener(e -> {
+            Set<HashTag> selectedHashTags = hashTags.getSelectedItems();
+            String customValue = e.getDetail();
+            HashTag customHashTag = new HashTag();
+            customHashTag.setName(customValue);
+            customHashTag.setWeight(100);
+            customHashTag = hashTagService.update(customHashTag);
+            hashTags.setItems(hashTagService.listAll());
+            hashTags.setItemLabelGenerator(HashTag::getName);
+            Set<HashTag> newSelectedHashTags = new HashSet<>(selectedHashTags);
+            newSelectedHashTags.add(customHashTag);
+            hashTags.setValue(newSelectedHashTags);
+        });
+
         imageFileName = new TextField("Image file");
         imageFileName.setReadOnly(true);
         MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
@@ -232,7 +256,7 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
         imageUpload.setAcceptedFileTypes("image/jpeg", "image/png");
         imageUpload.setMaxFiles(1);
         speciesImage = new Div(new Text("(no image file uploaded yet)"));
-        formLayout.add(danishName, latinName, englishName, euringCode, firstObservation, category, type, status, hashTagGroups, imageFileName, imageUpload, speciesImage);
+        formLayout.add(danishName, latinName, englishName, euringCode, firstObservation, category, type, status, hashTagGroups, hashTags, imageFileName, imageUpload, speciesImage);
 
         editorDiv.add(formLayout);
         createButtonLayout(editorLayoutDiv);
