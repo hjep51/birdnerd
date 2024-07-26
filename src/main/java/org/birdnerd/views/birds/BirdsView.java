@@ -25,20 +25,22 @@ import org.springframework.beans.factory.annotation.Value;
 public class BirdsView extends Main implements HasComponents, HasStyle {
 
     private String imagePath;
+    private String dofbasenSpeciesUrl;
 
     private OrderedList imageContainer;
     private final SpeciesService speciesService;
 
-    public BirdsView(SpeciesService speciesService, @Value("${birdnerd.imagepath}") String imagePath) {
+    public BirdsView(SpeciesService speciesService, @Value("${birdnerd.imagepath}") String imagePath, @Value("${birdnerd.dofbasen.speciesurl}") String dofbasenSpeciesUrl){
         this.speciesService = speciesService;
         this.imagePath = imagePath;
+        this.dofbasenSpeciesUrl = dofbasenSpeciesUrl;
         constructUI();
         populateView();
     }
 
     private void populateView() {
         speciesService.listOfObservertWithImage().forEach(species -> {
-            imageContainer.add(new BirdsViewCard(species, imagePath));
+            imageContainer.add(new BirdsViewCard(species, imagePath, dofbasenSpeciesUrl));
         });
     }
 

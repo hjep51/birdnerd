@@ -82,3 +82,5 @@ logging:
 birdnerd:
   doffile: /Users/hjep/Development/Personal/birdnerd/src/main/resources/dof-species.csv
   imagepath: /Users/hjep/Development/Personal/birdnerd/tmp-images/
+  dofbasen:
+    speciesurl: https://dofbasen.dk/danmarksfugle/art/

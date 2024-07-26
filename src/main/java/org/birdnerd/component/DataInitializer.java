@@ -68,7 +68,7 @@ public class DataInitializer {
 
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("Error while reading species data from file", e);
         }
     }
 }
