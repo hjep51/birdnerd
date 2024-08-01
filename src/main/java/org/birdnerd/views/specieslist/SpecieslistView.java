@@ -230,11 +230,13 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
         hashTagGroups.setItems(hashTagGroupService.list(PageRequest.of(0, 100)).getContent());
         hashTagGroups.setItemLabelGenerator(HashTagGroup::getName);
         hashTagGroups.setPlaceholder("Select HashTag Groups");
+        hashTagGroups.setAutoExpand(MultiSelectComboBox.AutoExpandMode.BOTH);
 
         hashTags = new MultiSelectComboBox<>("HashTag");
         hashTags.setItems(hashTagService.listAll());
         hashTags.setItemLabelGenerator(HashTag::getName);
         hashTags.setAllowCustomValue(true);
+        hashTags.setAutoExpand(MultiSelectComboBox.AutoExpandMode.BOTH);
         hashTags.addCustomValueSetListener(e -> {
             Set<HashTag> selectedHashTags = hashTags.getSelectedItems();
             String customValue = e.getDetail();
