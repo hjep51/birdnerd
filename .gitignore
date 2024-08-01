@@ -3,8 +3,7 @@
 
 ### Proj ###
 
-db/
-tmp-images/
+birdnerd-dev/
 src/main/frontend/generated/
 .npmrc
 node_modules/

@@ -1,40 +1,12 @@
-# Server settings
-server:
-  port: "${PORT:8080}"
-
 # Spring application settings
 spring:
   application:
     name: Birdnerd
   profiles:
-    active: production
+    active: development
   servlet:
     multipart:
       max-file-size: 10MB
-  sql:
-    init:
-      mode: always
-  jpa:
-    defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: create
-    database-platform: org.hibernate.dialect.H2Dialect
-    show-sql: false
-    properties:
-      hibernate:
-        format_sql: true
-  datasource:
-    url: jdbc:h2:file:/Users/hjep/Development/Personal/birdnerd/db/birdnerd
-    driverClassName: org.h2.Driver
-    username: birdnerd
-    password: HaliaeetusAlbicilla
-  h2:
-    console:
-      enabled: true
-      path: /h2-console
-      settings:
-        trace: false
-        web-allow-others: true
 
 # Spring actuator settings
 management:
@@ -59,28 +31,7 @@ management:
     build:
       enabled: true
 
-# Vaadin settings
-vaadin:
-  frontend:
-    hotdeploy: false
-
-# Logging settings
-logging:
-  level:
-    org:
-      atmosphere: ERROR
-      springframework: WARN
-      apache: WARN
-      hibernate:
-        SQL: WARN
-        type:
-          descriptor:
-            sql:
-              BasicBinder: WARN
-
 # Birdnerd settings
 birdnerd:
-  doffile: /Users/hjep/Development/Personal/birdnerd/src/main/resources/dof-species.csv
-  imagepath: /Users/hjep/Development/Personal/birdnerd/tmp-images/
   dofbasen:
     speciesurl: https://dofbasen.dk/danmarksfugle/art/
