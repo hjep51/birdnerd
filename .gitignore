@@ -212,4 +212,7 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 
+# igonring vscode files
+.vscode
+
 # End of https://www.toptal.com/developers/gitignore/api/macos,java,intellij+all,vaadin,vim,gradle
