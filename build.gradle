@@ -1,13 +1,13 @@
 plugins {
-	id 'java'
-	id 'org.springframework.boot' version '3.3.2'
-	id 'io.spring.dependency-management' version '1.1.6'
-	id 'org.graalvm.buildtools.native' version '0.10.2'
-	id 'com.vaadin' version '24.4.4'
+	id "java"
+	id "org.springframework.boot" version "3.3.2"
+	id "io.spring.dependency-management" version "1.1.6"
+	id "org.graalvm.buildtools.native" version "0.10.2"
+	id "com.vaadin" version "24.4.4"
 }
 
-group = 'org.birdnerd'
-version = '0.0.1-SNAPSHOT'
+group = "org.birdnerd"
+version = "0.0.1-SNAPSHOT"
 
 java {
 	toolchain {
@@ -20,7 +20,7 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 	all {
-		exclude group: 'com.vaadin', module: 'copilot'
+		exclude group: "com.vaadin", module: "copilot"
 	}
 }
 
@@ -29,21 +29,23 @@ repositories {
 }
 
 ext {
-	set('vaadinVersion', "24.4.4")
+	set("vaadinVersion", "24.4.4")
+	set("vaadinLefletVersion", "4.3.0")
+	set("lineAwesomeVersion", "2.0.0")
 }
 
 dependencies {
-	implementation 'com.vaadin:vaadin-spring-boot-starter'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.parttio:line-awesome:2.0.0'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'software.xdev:vaadin-maps-leaflet-flow:4.3.0'
-	compileOnly 'org.projectlombok:lombok'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	runtimeOnly 'com.h2database:h2'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation "com.vaadin:vaadin-spring-boot-starter"
+	implementation "org.springframework.boot:spring-boot-starter-actuator"
+	implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+	implementation "org.springframework.boot:spring-boot-starter-validation"
+	implementation "org.parttio:line-awesome:${lineAwesomeVersion}"
+	implementation "software.xdev:vaadin-maps-leaflet-flow:${vaadinLefletVersion}"
+	compileOnly "org.projectlombok:lombok"
+	runtimeOnly "com.h2database:h2"
+	annotationProcessor "org.projectlombok:lombok"
+	testImplementation "org.springframework.boot:spring-boot-starter-test"
+	testRuntimeOnly "org.junit.platform:junit-platform-launcher"
 }
 
 dependencyManagement {
@@ -52,7 +54,7 @@ dependencyManagement {
 	}
 }
 
-tasks.named('test') {
+tasks.named("test") {
 	useJUnitPlatform()
 }
 
