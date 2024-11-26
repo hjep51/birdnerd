@@ -5,7 +5,6 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.combobox.MultiSelectComboBox;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.upload.Upload;
-import com.vaadin.flow.component.upload.receivers.MultiFileMemoryBuffer;
 import com.vaadin.flow.data.renderer.LitRenderer;
 import com.vaadin.flow.server.StreamResource;
 import lombok.extern.slf4j.Slf4j;
@@ -161,7 +160,9 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
                     this.species = new Species();
                 }
                 binder.writeBean(this.species);
-                saveImage();
+                if(!saveImage()) {
+                    Notification.show("Failed to save image file");
+                }
                 speciesService.update(this.species);
                 clearForm();
                 refreshGrid();
@@ -253,7 +254,6 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
 
         imageFileName = new TextField("Image file");
         imageFileName.setReadOnly(true);
-        MultiFileMemoryBuffer buffer = new MultiFileMemoryBuffer();
         imageUpload = new Upload(this::receiveUpload);
         imageUpload.setAcceptedFileTypes("image/jpeg", "image/png");
         imageUpload.setMaxFiles(1);
@@ -348,9 +348,15 @@ public class SpecieslistView extends Div implements BeforeEnterObserver {
             try {
                 File targetFile = new File(IMAGE_PATH + this.originalFileName);
                 if (targetFile.exists()) {
-                    targetFile.delete();
+                    if(!targetFile.delete()) {
+                        log.warn("Failed to delete existing image file: '{}'", targetFile.getAbsolutePath());
+                        return false;
+                    }
                 }
-                this.file.renameTo(targetFile);
+                if(!this.file.renameTo(targetFile)) {
+                    log.warn("Failed to rename image file: '{}'", this.file.getAbsolutePath());
+                    return false;
+                }
                 return true;
             } catch (Exception e) {
                 log.warn("Failed to save image file: '{}'", this.file.getAbsolutePath(), e);

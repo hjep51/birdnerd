@@ -107,7 +107,7 @@ public class BirdsViewCard extends ListItem {
         }
         catch(final FileNotFoundException e)
         {
-            log.warn("Image file not found: " + imageFilePath);
+            log.warn("Image file not found: {}", imageFilePath);
             return null;
         }
     });
