@@ -18,24 +18,16 @@ java {
 
 spotless {
 	format 'misc', {
-		// define the files to apply `misc` to
 		target '*.gradle', '.gitattributes', '.gitignore'
-
-		// define the steps to apply to those files
 		trimTrailingWhitespace()
-		indentWithTabs() // or spaces. Takes an integer argument if you don't like 4
+		indentWithTabs()
 		endWithNewline()
 	}
 	java {
-		// Use the default importOrder configuration
 		importOrder()
-
-		// Cleanthat will refactor your code, but it may break your style: apply it before your formatter
-		cleanthat()          // has its own section below
-
-		// Choose one of these formatters.
-		googleJavaFormat()   // has its own section below
-		formatAnnotations()  // fixes formatting of type annotations, see below
+		cleanthat()
+		googleJavaFormat()
+		formatAnnotations()
 	}
 }
 

@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @Theme(value = "my-app")
 public class BirdnerdApplication implements AppShellConfigurator {
 
-    public static void main(String[] args) {
-        SpringApplication.run(BirdnerdApplication.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(BirdnerdApplication.class, args);
+  }
 }
