@@ -1,8 +1,12 @@
 package org.birdnerd.data.models;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 @MappedSuperclass
+@Getter
+@Setter
 public abstract class AbstractEntity {
 
   @Id
@@ -12,18 +16,6 @@ public abstract class AbstractEntity {
   private Long id;
 
   @Version private int version;
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public int getVersion() {
-    return version;
-  }
 
   @Override
   public int hashCode() {

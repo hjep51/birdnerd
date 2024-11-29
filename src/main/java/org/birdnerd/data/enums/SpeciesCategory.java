@@ -1,5 +1,8 @@
 package org.birdnerd.data.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum SpeciesCategory {
   BIRD("Fugl"),
   MAMMAL("Pattedyr"),
@@ -17,10 +20,6 @@ public enum SpeciesCategory {
 
   SpeciesCategory(String danishName) {
     this.danishName = danishName;
-  }
-
-  public String getDanishName() {
-    return danishName;
   }
 
   public static SpeciesCategory getByDanishName(String danishName) {

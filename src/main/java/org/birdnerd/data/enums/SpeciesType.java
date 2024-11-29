@@ -1,5 +1,8 @@
 package org.birdnerd.data.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum SpeciesType {
   SPECIES("Art", "art"),
   SUBSPECIES("Underart", "underart"),
@@ -16,26 +19,9 @@ public enum SpeciesType {
     this.dofName = dofName;
   }
 
-  public String getDanishName() {
-    return danishName;
-  }
-
-  public String getDofName() {
-    return dofName;
-  }
-
   public static SpeciesType getByDofName(String dofName) {
     for (SpeciesType speciesType : values()) {
       if (speciesType.getDofName().equals(dofName)) {
-        return speciesType;
-      }
-    }
-    return SpeciesType.UNKNOWN;
-  }
-
-  public static SpeciesType getByDanishName(String danishName) {
-    for (SpeciesType speciesType : values()) {
-      if (speciesType.getDanishName().equals(danishName)) {
         return speciesType;
       }
     }

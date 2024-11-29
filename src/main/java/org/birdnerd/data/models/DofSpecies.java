@@ -1,7 +1,11 @@
 package org.birdnerd.data.models;
 
 import java.util.Objects;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class DofSpecies {
 
   private String euring;
@@ -11,62 +15,6 @@ public class DofSpecies {
   private String english;
   private String status;
   private String type;
-
-  public String getEuring() {
-    return euring;
-  }
-
-  public void setEuring(String euring) {
-    this.euring = euring;
-  }
-
-  public int getSortering() {
-    return sortering;
-  }
-
-  public void setSortering(int sortering) {
-    this.sortering = sortering;
-  }
-
-  public String getArtnavn() {
-    return artnavn;
-  }
-
-  public void setArtnavn(String artnavn) {
-    this.artnavn = artnavn;
-  }
-
-  public String getLatin() {
-    return latin;
-  }
-
-  public void setLatin(String latin) {
-    this.latin = latin;
-  }
-
-  public String getEnglish() {
-    return english;
-  }
-
-  public void setEnglish(String english) {
-    this.english = english;
-  }
-
-  public String getStatus() {
-    return status;
-  }
-
-  public void setStatus(String status) {
-    this.status = status;
-  }
-
-  public String getType() {
-    return type;
-  }
-
-  public void setType(String type) {
-    this.type = type;
-  }
 
   @Override
   public boolean equals(Object o) {

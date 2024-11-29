@@ -1,5 +1,8 @@
 package org.birdnerd.data.enums;
 
+import lombok.Getter;
+
+@Getter
 public enum SpeciesStatus {
   A("A", "A"),
   AS("AS", "AS"),
@@ -24,14 +27,6 @@ public enum SpeciesStatus {
   SpeciesStatus(String danishName, String dofName) {
     this.danishName = danishName;
     this.dofName = dofName;
-  }
-
-  public String getDanishName() {
-    return danishName;
-  }
-
-  public String getDofName() {
-    return dofName;
   }
 
   public static SpeciesStatus getByDofName(String dofName) {
