@@ -36,7 +36,7 @@ configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
-	all {
+    configureEach {
 		exclude group: "com.vaadin", module: "copilot"
 	}
 }
